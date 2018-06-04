@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "eslint --ignore-path .gitignore ."
   },
   "author": "Nandan",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongodb": "^3.0.10"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-strongloop": "^2.1.0"
   }
 }
