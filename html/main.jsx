@@ -30,10 +30,11 @@ class Signin extends React.Component {
             password: this.state.password
         })
             .then(function (response) {
-                console.log(response);
+               alert(response);
+               console.log(response)
             })
             .catch(function (error) {
-                console.log(error);
+                alert(error);
             });
     }
     render() {

@@ -1,7 +1,6 @@
-import * as Utils from "utils";
-
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
+var Utils = require('./utils');
 var url = 'mongodb://localhost:27017/Blog';
 
 module.exports = {
@@ -10,28 +9,29 @@ module.exports = {
             if (err) throw err;
             var db = client.db('Blog');
             db.collection('user').insertOne({
-                "name": name,
-                "email": email,
-                "password": Utils.hash(password)
+                name: name,
+                email: email,
+                password: Utils.hash(password)
             }, function (err, result) {
                 assert.equal(err, null);
-                console.log("Saved the user sign up details.");
+                console.log('Saved the user sign up details.');
             });
         });
     },
-    validateSignIn: function(username, password,callback){
-        MongoClient.connect(url, function(err, client){
-            if(err) throw err;
+    validateSignIn: function (email, password, callback) {
+        MongoClient.connect(url, function (err, client) {
+            if (err) throw err;
             var db = client.db('Blog');
-            db.collection('user').findOne( { email : username ,password: Utils.hash(password) 
-            },function(err, result){
-                if(result==null){
-                    callback(false)
-                }
-                else{
-                    callback(true)
+            db.collection('user').findOne({
+                email: email,
+                password: Utils.hash(password)
+            }, function (err, result) {
+                if (result == null) {
+                    callback(err, false);
+                } else {
+                    callback(err, true);
                 }
             });
         });
     }
-}
+};
