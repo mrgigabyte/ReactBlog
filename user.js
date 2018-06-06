@@ -8,13 +8,16 @@ module.exports = {
         MongoClient.connect(url, function (err, client) {
             if (err) throw err;
             var db = client.db('Blog');
-            db.collection('user').insertOne({
-                name: name,
-                email: email,
-                password: Utils.hash(password)
-            }, function (err, result) {
-                assert.equal(err, null);
-                console.log('Saved the user sign up details.');
+            Utils.hash(password, function (err, pass) {
+                if (err) throw err;
+                db.collection('user').insertOne({
+                    name: name,
+                    email: email,
+                    password: pass
+                }, function (err, result) {
+                    assert.equal(err, null);
+                    console.log('Saved the user sign up details.');
+                });
             });
         });
     },
@@ -23,13 +26,18 @@ module.exports = {
             if (err) throw err;
             var db = client.db('Blog');
             db.collection('user').findOne({
-                email: email,
-                password: Utils.hash(password)
+                email: email
             }, function (err, result) {
                 if (result == null) {
                     callback(err, false);
                 } else {
-                    callback(err, true);
+                    pass = result.password;
+                    Utils.compare(password, pass, function (err1, res) {
+                        if (err1) throw err1;
+                        if (res) {
+                            callback(err, true);
+                        }
+                    });
                 }
             });
         });

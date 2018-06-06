@@ -11,9 +11,10 @@ app.listen(7777, function () {
 });
 
 app.post('/signin', function (req, res) {
-    var userName = req.body.email;
+    var email = req.body.email;
     var password = req.body.password;
-    user.validateSignIn(userName, password, function (result) {
+    user.validateSignIn(email, password, function (err, result) {
+        if (err) throw err;
         if (result) {
             res.send('Success');
         } else {
@@ -26,12 +27,9 @@ app.post('/signup', function (req, res) {
     var email = req.body.email;
     var password = req.body.password;
     var name = req.body.name;
-    // res.send('success');
     if (name && email && password) {
         user.signup(name, email, password);
     } else {
         res.send('Failure');
     }
-    // user.signup('','','')
-    // console.log(res)
 });
