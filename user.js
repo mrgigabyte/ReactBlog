@@ -31,11 +31,13 @@ module.exports = {
                 if (result == null) {
                     callback(err, false);
                 } else {
-                    pass = result.password;
+                    let pass = result.password;
                     Utils.compare(password, pass, function (err1, res) {
                         if (err1) throw err1;
                         if (res) {
                             callback(err, true);
+                        } else {
+                            callback(err, false);
                         }
                     });
                 }

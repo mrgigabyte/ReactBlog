@@ -23,20 +23,23 @@ class Signin extends React.Component {
     handlePasswordChange(e) {
         this.setState({ password: e.target.value });
     }
+
     signIn() {
-        alert("The email is " + this.state.email + " and the password is " + this.state.password);
         axios.post('/signin', {
             email: this.state.email,
             password: this.state.password
         })
             .then(function (response) {
-               alert(response);
-               console.log(response)
+               console.log(response.data)
+               if(response.data == 'Success'){
+                   window.location.assign('http://localhost:7777/home')
+               }
             })
             .catch(function (error) {
-                alert(error);
+                console.log(error);
             });
     }
+
     render() {
         return (
             <div>
@@ -84,7 +87,6 @@ class Signup extends React.Component {
     }
 
     signUp() {
-        console.log(this.state);
         axios.post('/signup', {
             name: this.state.name,
             email: this.state.email,
@@ -92,6 +94,7 @@ class Signup extends React.Component {
         })
             .then(function (response) {
             console.log(response);
+            alert('account created successfully')
         }).catch(function (error) {
             console.log(error);
         })
@@ -125,5 +128,3 @@ ReactDOM.render(
         <Route component={Signup} path="/signup"></Route>
     </Router>,
     document.getElementById('app'));
-
-// console.log('ok')
